@@ -2,10 +2,6 @@ using System;
 
 namespace F500.RulesEngine
 {
-    public class DiceRoll2
-    {
-    }
-
     /// <summary>
     /// 
     /// </summary>
