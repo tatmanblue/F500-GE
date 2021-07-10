@@ -1,0 +1,8 @@
+[
+  {
+    "Position": 0,
+    "Display": "Business Condition",
+    "Type": "BusinessCondition",
+    "Trigger": "BusinessCondition, PayDay"
+  }
+]
