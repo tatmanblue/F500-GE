@@ -10,9 +10,21 @@ namespace F500Tests
     public class DiceRollTests
     {
         [Test]
+        public void SingleDiceRoll()
+        {
+            DiceRoll roll = new DiceRoll();
+            // the default dice settings is 1 dice, 6 sides
+            int result = roll.Generate();
+            Assert.IsTrue(result > 0);
+            Assert.IsTrue(result <= 6);
+        }
+
+        /// <summary>
+        /// this test runs many generates and ensures the results are always as expected
+        /// </summary>
+        [Test]
         public void One6SidedDiceAssurances()
         {
-            // Use the Assert class to test conditions
             DiceRoll roll = new DiceRoll();
             for (int count = 0; count < 500; count++)
             {
@@ -25,7 +37,6 @@ namespace F500Tests
         [Test]
         public void Two6SidedDiceAssurances()
         {
-            // Use the Assert class to test conditions
             DiceRoll roll = new DiceRoll();
             for (int count = 0; count < 500; count++)
             {
@@ -55,5 +66,11 @@ namespace F500Tests
             Assert.Throws<RulesException>(delegate { roll.Generate(-5, 6); });
         }
         
+        [Test]
+        public void InvalidSidesCount()
+        {
+            DiceRoll roll = new DiceRoll();
+            Assert.Throws<RulesException>(delegate { roll.Generate(1, 2); });
+        }
     }
 }
