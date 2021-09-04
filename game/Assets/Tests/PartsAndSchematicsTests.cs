@@ -36,19 +36,19 @@ namespace F500Tests
             concrete.Parts.Add(new Part()
             {
                 Schematic = silicon,
-                Quantity = 37.5m
+                QuantityNeeded = 37.5m
             });
             
             concrete.Parts.Add(new Part()
             {
                 Schematic = carbon,
-                Quantity = 37.5m
+                QuantityNeeded = 37.5m
             });
             
             concrete.Parts.Add(new Part()
             {
                 Schematic = calcium,
-                Quantity = 5
+                QuantityNeeded = 5
             });
             
             PartListGenerator generator = new PartListGenerator(concrete, 50);
@@ -74,7 +74,7 @@ namespace F500Tests
             iron.Parts.Add(new Part()
             {
                 Schematic = ironOre,
-                Quantity = 60,
+                QuantityNeeded = 60,
             });
 
             PartListGenerator generator = new PartListGenerator(iron, 50);

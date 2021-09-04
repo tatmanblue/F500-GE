@@ -3,7 +3,7 @@
     public class Part
     {
         public Schematic Schematic { get; set; }
-        public decimal Quantity { get; set; }
+        public decimal QuantityNeeded { get; set; }
     }
 
     /// <summary>

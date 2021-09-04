@@ -15,7 +15,7 @@ namespace F500.DU
         /// </summary>
         public int Quantity { get; private set; }
 
-        public List<OutputPart> Parts { get; private set; } = new List<OutputPart>();
+        public Dictionary<string, OutputPart> Parts { get; private set; } = new Dictionary<string, OutputPart>();
 
         public PartListGenerator(Schematic schematic, int qty)
         {
@@ -27,23 +27,27 @@ namespace F500.DU
         {
             foreach (Part part in Schematic.Parts)
             {
-                Generate(part.Schematic);
+                Generate(part);
             }
         }
 
-        private void Generate(Schematic item)
+        private void Generate(Part item)
         {
-            foreach (Part part in Schematic.Parts)
+            Schematic schematic = item.Schematic;
+            OutputPart itemPart;
+            Parts.TryGetValue(schematic.Name, out itemPart);
+            if (null == itemPart)
             {
-                if (!Parts.Any(n => n.Schematic.Name == part.Schematic.Name))
+                itemPart = new OutputPart()
                 {
-                    OutputPart outputPart = new OutputPart()
-                    {
-                        Schematic = part.Schematic,
-                        Quantity = part.Quantity
-                    };
-                }
-                Generate(part.Schematic);
+                    Schematic = schematic
+                };
+                Parts.Add(schematic.Name, itemPart);
+            }
+
+            foreach (Part part in schematic.Parts)
+            {
+                Generate(part);
             }
         }
     }
