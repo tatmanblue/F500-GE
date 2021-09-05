@@ -1,5 +1,6 @@
 ﻿using F500.DU;
 using NUnit.Framework;
+using UnityEditor.VersionControl;
 using UnityEngine.TestTools;
 
 namespace F500Tests
@@ -62,24 +63,34 @@ namespace F500Tests
             Schematic iron = new Schematic()
             {
                 Name = "Pure Iron",
-                BatchOutputSize = 50
+                BatchOutputSize = 45
             };
 
             Schematic ironOre = new Schematic()
             {
-                Name = "Iron Ore",
-                BatchOutputSize = 20
+                Name = "Hematite",
+                BatchOutputSize = 1
             };
             
             iron.Parts.Add(new Part()
             {
                 Schematic = ironOre,
-                QuantityNeeded = 60,
+                QuantityNeeded = 60,            // what we are saying here is we need 60 Hematite to produce 45 pure iron
             });
 
-            PartListGenerator generator = new PartListGenerator(iron, 50);
+            PartListGenerator generator = new PartListGenerator(iron, 45);
             generator.Generate();
             Assert.AreEqual(1, generator.Parts.Count);
+            OutputPart result = generator.Parts[ironOre.Name];
+            Assert.AreEqual(60, result.Created);
+            Assert.AreEqual(1, generator.Iterations);
+            
+            generator = new PartListGenerator(iron, 100);
+            generator.Generate();
+            Assert.AreEqual(1, generator.Parts.Count);
+            result = generator.Parts[ironOre.Name];
+            Assert.AreEqual(180, result.Created);
+            Assert.AreEqual(3, generator.Iterations);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace F500.DU
@@ -15,6 +16,8 @@ namespace F500.DU
         /// </summary>
         public int Quantity { get; private set; }
 
+        public int Iterations { get; private set; } = 1;
+
         public Dictionary<string, OutputPart> Parts { get; private set; } = new Dictionary<string, OutputPart>();
 
         public PartListGenerator(Schematic schematic, int qty)
@@ -25,6 +28,7 @@ namespace F500.DU
 
         public void Generate()
         {
+            Iterations = (int) Math.Ceiling(Quantity / Schematic.BatchOutputSize);
             foreach (Part part in Schematic.Parts)
             {
                 Generate(part);
@@ -43,6 +47,12 @@ namespace F500.DU
                     Schematic = schematic
                 };
                 Parts.Add(schematic.Name, itemPart);
+            }
+
+            itemPart.QuantityNeeded += item.QuantityNeeded * Iterations;
+            while (itemPart.QuantityNeeded > itemPart.Created)
+            {
+                itemPart.Created += item.Schematic.BatchOutputSize;
             }
 
             foreach (Part part in schematic.Parts)

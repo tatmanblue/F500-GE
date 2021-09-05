@@ -12,6 +12,10 @@
     /// </summary>
     public class OutputPart : Part
     {
+        /// <summary>
+        /// this is the amount of part actually created
+        /// it would be a multiple of Schematic.BatchSize
+        /// </summary>
         public decimal Created { get; set; }
     }
 }
