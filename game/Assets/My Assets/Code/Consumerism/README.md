@@ -5,10 +5,13 @@ Consumerism the market AI for the game.
 Here's a list of parts so far
 | Name            | Role            |
 | --------------- | --------------- |
-| Producer        | Creates "items" that become part of the economy.  Is most likely a seller but doesn't have to be |
-| Consumer        | consumes "items" that are in the economy.  Is most likely a buyer but doesn't have to be |
-| Buyer           |                 |
-| Seller          |                 |
+| Producer        | Creates "items" that become part of the economy. This 
+means item qty on the market increases but it doesn't mean the producer put
+the item on the market.  Is most likely a seller but doesn't have to be |
+| Consumer        | Consumes "items" that are in the economy.  Is most likely a buyer but doesn't have to be |
+| Buyer           | Buys an item off the market but doesn't remove it from the economy  |
+| Seller          | Sells an item to the market but doesn't increase total qty
+of the item in the economy |
 | Supply Side Mgr | Handles Producer/Seller interactions with the market |
-| Demand Side Mgr | HAndles Consumer/Buyer interactions with the market |
+| Demand Side Mgr | Handles Consumer/Buyer interactions with the market |
 | "Items"         | Stuff that goes into the market |
