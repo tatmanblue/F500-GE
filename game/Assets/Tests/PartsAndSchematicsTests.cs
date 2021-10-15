@@ -54,7 +54,8 @@ namespace F500Tests
             
             PartListGenerator generator = new PartListGenerator(concrete, 50);
             generator.Generate();
-            Assert.AreEqual(1, generator.Parts.Count);
+            Assert.AreEqual(50, generator.Quantity);
+            Assert.AreEqual(1, generator.Iterations);
         }
 
         [Test]
