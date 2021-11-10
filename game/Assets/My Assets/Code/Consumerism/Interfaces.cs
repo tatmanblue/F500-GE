@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace F500.Consumerism
 {
 	// Producers add "items" into the economy
@@ -11,4 +13,14 @@ namespace F500.Consumerism
 	
 	// Buyers buy items from the market
 	public interface IBuyer {}
+	
+	public interface IEconomicItem {}
+
+	public interface IMarketPlace
+	{
+		Dictionary<string, IEconomicItem> Items { get; }
+		event PriceChangedEvent PriceChanged;
+		event QuantityChangedEvent QuantityChanged;
+		event VolumeChangedEvent VolumeChanged;
+	}
 }
