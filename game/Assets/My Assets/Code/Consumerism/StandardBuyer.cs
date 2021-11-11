@@ -10,7 +10,7 @@ namespace F500.Consumerism
     {
         public decimal MinPrice { get; set; } = 50.0M;
         public decimal Quantity { get; set; } = 1.0M;
-        public IEconomicItem Item { get; set; }
+        public IMarketableItem Item { get; set; }
         
         public StandardBuyer()
         {
@@ -19,7 +19,8 @@ namespace F500.Consumerism
 
         private void OnPriceChangedHandler(PriceChangedEventArgs args)
         {
-            if (args.Item.UniqueId != Item.UniqueId)
+            // yikes.....
+            if (args.Item.Item.Id != Item.Item.Id)
                 return;
 
             if (args.Price < MinPrice)

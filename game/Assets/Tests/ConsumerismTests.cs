@@ -6,7 +6,7 @@ namespace F500Tests
 {
     public class TestMarketPlace : MarketPlace
     {
-        public void CreatePriceChangeEvent(EconomicItem item, decimal newPrice)
+        public void CreatePriceChangeEvent(IMarketableItem item, decimal newPrice)
         {
             FirePriceChangeEvent(item, newPrice);
         }
@@ -17,32 +17,26 @@ namespace F500Tests
         [Test]
         public void BuyerBuysAtPrice()
         {
-            EconomicItem woodAtMarket = new EconomicItem
+            EconomicItem woodItem = new EconomicItem(1, "1", "wood");
+            MarketableItem woodMarketItem = new MarketableItem()
             {
-                Price = 50M,
-                Qty = 50M,
-                UniqueId = "wood"
-            };
-
-            EconomicItem woodCriteria = new EconomicItem()
-            {
-                Price = 30,
-                Qty = 1,
-                UniqueId = "wood"
+                Item = woodItem,
+                Price = 50,
+                Qty = 1000
             };
 
             TestMarketPlace marketPlace = new TestMarketPlace();
-            marketPlace.Items.Add(woodAtMarket.UniqueId, woodAtMarket);
+            marketPlace.Items.Add(woodMarketItem.Item.Id, woodMarketItem);
             
             ServiceLocator.Current.RegisterMarket(marketPlace);
             StandardBuyer buyer = new StandardBuyer()
             {
-                Item = woodCriteria,
+                Item = woodMarketItem,
                 Quantity = 1,
                 MinPrice = 30
             };
             
-            marketPlace.CreatePriceChangeEvent(woodAtMarket, 25);
+            marketPlace.CreatePriceChangeEvent(woodMarketItem, 25);
 
         }
     }

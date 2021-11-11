@@ -2,12 +2,15 @@ using System.Collections.Generic;
 
 namespace F500.Consumerism
 {
+	#region production and consumption
 	// Producers add "items" into the economy
 	public interface IProducer {}
 	
 	// Consumers remove "items" from the economy
 	public interface IConsumer {}
+	#endregion
 	
+	#region buying and selling
 	// Sellers sell items to the market
 	public interface ISeller {}
 	
@@ -15,21 +18,45 @@ namespace F500.Consumerism
 	/// Buyers buy items from the market 
 	/// </summary>
 	public interface IBuyer {}
+	#endregion
 
+	#region market
 	public interface IEconomicItem
 	{
-		string UniqueId { get; }
+		/// <summary>
+		/// unique ID, used by system as reference
+		/// </summary>
+		int Id { get; }
+		/// <summary>
+		/// not used in the system, usable for identifying
+		/// outside the system
+		/// </summary>
+		string SystemId { get; }
+		/// <summary>
+		/// a nice name, for display or something
+		/// </summary>
 		string Name { get; }
+	}
+
+	/// <summary>
+	/// An item that can be held in the market
+	/// </summary>
+	public interface IMarketableItem
+	{
+		IEconomicItem Item { get; }
+		decimal Price { get; }
+		decimal Qty { get; }
 	}
 
 	public interface IMarketPlace
 	{
-		Dictionary<string, IEconomicItem> Items { get; }
+		Dictionary<int, IMarketableItem> Items { get; }
 		event PriceChangedEvent PriceChanged;
 		event QuantityChangedEvent QuantityChanged;
 		event VolumeChangedEvent VolumeChanged;
 
-		bool CanBuy(IEconomicItem item, decimal qty);
-		void Buy(IEconomicItem item, decimal qty);
+		bool CanBuy(IMarketableItem item, decimal qty);
+		void Buy(IMarketableItem item, decimal qty);
 	}
+	#endregion
 }

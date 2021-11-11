@@ -12,7 +12,7 @@ namespace F500.Consumerism
         private QuantityChangedEvent qtyChangedEvent;
         private VolumeChangedEvent volumeChangedEvent;
 
-        public Dictionary<string, IEconomicItem> Items { get; } = new Dictionary<string, IEconomicItem>();
+        public Dictionary<int, IMarketableItem> Items { get; } = new Dictionary<int, IMarketableItem>();
         
         public event PriceChangedEvent PriceChanged
         {
@@ -51,7 +51,7 @@ namespace F500.Consumerism
             }
         }
 
-        protected void FirePriceChangeEvent(EconomicItem item, decimal newPrice)
+        protected void FirePriceChangeEvent(IMarketableItem item, decimal newPrice)
         {
             PriceChangedEvent safeEvent = priceChangedEvent;
             if (null == safeEvent) return;
@@ -64,7 +64,7 @@ namespace F500.Consumerism
             safeEvent(args);
         }
 
-        protected void FireQtyChangeEvent(EconomicItem item, decimal newQty)
+        protected void FireQtyChangeEvent(IMarketableItem item, decimal newQty)
         {
             QuantityChangedEvent safeEvent = qtyChangedEvent;
             if (null == safeEvent) return;
@@ -77,7 +77,7 @@ namespace F500.Consumerism
             safeEvent(args);
         }
 
-        protected void FireVolumeChangeEvent(EconomicItem item, decimal newVolume)
+        protected void FireVolumeChangeEvent(IMarketableItem item, decimal newVolume)
         {
             VolumeChangedEvent safeEvent = volumeChangedEvent;
             if (null == safeEvent) return;
@@ -90,12 +90,12 @@ namespace F500.Consumerism
             safeEvent(args);
         }
         
-        public bool CanBuy(IEconomicItem item, decimal qty)
+        public bool CanBuy(IMarketableItem item, decimal qty)
         {
             return true;
         }
 
-        public void Buy(IEconomicItem item, decimal qty)
+        public void Buy(IMarketableItem item, decimal qty)
         {
             
         }
