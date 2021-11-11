@@ -10,8 +10,9 @@
     /// </summary>
     public class EconomicItem : IEconomicItem
     {
+        public string UniqueId { get; set; }
+        public string Name { get; set; }
         public decimal Qty { get; set; }
         public decimal Price { get; set; }
-        public string UniqueId { get; set; }
     }
 }

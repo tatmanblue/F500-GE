@@ -11,10 +11,16 @@ namespace F500.Consumerism
 	// Sellers sell items to the market
 	public interface ISeller {}
 	
-	// Buyers buy items from the market
+	/// <summary>
+	/// Buyers buy items from the market 
+	/// </summary>
 	public interface IBuyer {}
-	
-	public interface IEconomicItem {}
+
+	public interface IEconomicItem
+	{
+		string UniqueId { get; }
+		string Name { get; }
+	}
 
 	public interface IMarketPlace
 	{
@@ -23,7 +29,7 @@ namespace F500.Consumerism
 		event QuantityChangedEvent QuantityChanged;
 		event VolumeChangedEvent VolumeChanged;
 
-		bool CanBuy(IEconomicItem item);
-		void Buy(IEconomicItem item);
+		bool CanBuy(IEconomicItem item, decimal qty);
+		void Buy(IEconomicItem item, decimal qty);
 	}
 }
