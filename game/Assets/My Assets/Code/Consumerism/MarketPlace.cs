@@ -11,5 +11,15 @@ namespace F500.Consumerism
         public event PriceChangedEvent PriceChanged;
         public event QuantityChangedEvent QuantityChanged;
         public event VolumeChangedEvent VolumeChanged;
+
+        public bool CanBuy(IEconomicItem item)
+        {
+            return true;
+        }
+
+        public void Buy(IEconomicItem item)
+        {
+            
+        }
     }
 }

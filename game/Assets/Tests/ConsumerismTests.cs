@@ -8,8 +8,10 @@ namespace F500Tests
         [Test]
         public void BuyerBuysAtPrice()
         {
-            ServiceLocator.Current.RegisterMarket(new MarketPlace());
+            MarketPlace marketPlace = new MarketPlace();
+            ServiceLocator.Current.RegisterMarket(marketPlace);
             StandardBuyer buyer = new StandardBuyer();
+
         }
     }
 }
