@@ -48,6 +48,15 @@ namespace F500.Consumerism
 		decimal Qty { get; }
 	}
 
+	public interface IMarketActionItem
+	{
+		IEconomicItem Item { get; }
+		decimal Price { get; }
+		decimal Qty { get; }
+		decimal Volume { get; }
+		decimal ActionQty { get; }
+	}
+	
 	public interface IMarketPlace
 	{
 		Dictionary<int, IMarketableItem> Items { get; }

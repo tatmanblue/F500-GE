@@ -8,9 +8,7 @@ namespace F500.Consumerism
     /// </summary>
     public class StandardBuyer : IBuyer
     {
-        public decimal MinPrice { get; set; } = 50.0M;
-        public decimal Quantity { get; set; } = 1.0M;
-        public IMarketableItem Item { get; set; }
+        public IMarketActionItem Item { get; set; }
         
         public StandardBuyer()
         {
@@ -23,13 +21,13 @@ namespace F500.Consumerism
             if (args.Item.Item.Id != Item.Item.Id)
                 return;
 
-            if (args.Price < MinPrice)
+            if (args.Item.Price >= Item.Price)
             {
                 List<IMarketPlace> markets = ServiceLocator.Current.GetMarkets();
                 foreach (IMarketPlace m in markets)
                 {
-                    if (m.CanBuy(args.Item, Quantity))
-                        m.Buy(args.Item, Quantity);
+                    if (m.CanBuy(args.Item, Item.Qty))
+                        m.Buy(args.Item, Item.Qty);
                 }
             }
         }

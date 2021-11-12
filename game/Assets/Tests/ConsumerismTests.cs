@@ -29,11 +29,18 @@ namespace F500Tests
             marketPlace.Items.Add(woodMarketItem.Item.Id, woodMarketItem);
             
             ServiceLocator.Current.RegisterMarket(marketPlace);
+            MarketActionItem actionItem = new MarketActionItem()
+            {
+                Item = woodItem,
+                ActionQty = 1,
+                Price = 30,
+                Qty = Constants.NOT_APPLICABLE,
+                Volume = Constants.NOT_APPLICABLE
+            };
+            
             StandardBuyer buyer = new StandardBuyer()
             {
-                Item = woodMarketItem,
-                Quantity = 1,
-                MinPrice = 30
+                Item = actionItem
             };
             
             marketPlace.CreatePriceChangeEvent(woodMarketItem, 25);
