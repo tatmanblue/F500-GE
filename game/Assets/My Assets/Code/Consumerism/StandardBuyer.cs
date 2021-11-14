@@ -12,7 +12,11 @@ namespace F500.Consumerism
         
         public StandardBuyer()
         {
-            ServiceLocator.Current.OnPriceChanged += OnPriceChangedHandler;
+            List<IMarketPlace> markets = ServiceLocator.Current.GetMarkets();
+            foreach (IMarketPlace m in markets)
+            {
+                m.PriceChanged += OnPriceChangedHandler;
+            }
         }
 
         private void OnPriceChangedHandler(PriceChangedEventArgs args)
@@ -21,7 +25,7 @@ namespace F500.Consumerism
             if (args.Item.Item.Id != Item.Item.Id)
                 return;
 
-            if (args.Item.Price >= Item.Price)
+            if (args.Price <= Item.Price)
             {
                 List<IMarketPlace> markets = ServiceLocator.Current.GetMarkets();
                 foreach (IMarketPlace m in markets)

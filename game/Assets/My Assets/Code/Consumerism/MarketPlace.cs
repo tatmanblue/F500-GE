@@ -97,7 +97,7 @@ namespace F500.Consumerism
 
         public void Buy(IMarketableItem item, decimal qty)
         {
-            
+            FireQtyChangeEvent(item, qty);
         }
     }
     

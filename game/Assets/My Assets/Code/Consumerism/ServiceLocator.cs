@@ -9,8 +9,6 @@ namespace F500.Consumerism
         public static ServiceLocator Current { get; private set; } = new ServiceLocator();
         public static void Initiailze(){}
 
-        public PriceChangedEvent OnPriceChanged;
-
         public void RegisterMarket(IMarketPlace market)
         {
             markets.Add(market);

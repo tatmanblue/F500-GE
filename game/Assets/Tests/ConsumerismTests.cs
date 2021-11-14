@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading;
 using F500.Consumerism;
 using NUnit.Framework;
+using UnityEditor.VersionControl;
 
 namespace F500Tests
 {
@@ -17,6 +19,8 @@ namespace F500Tests
         [Test]
         public void BuyerBuysAtPrice()
         {
+            bool buyerBought = false;
+            Semaphore wait = new Semaphore(0, 1, "BuyerBuysAtPrice");
             EconomicItem woodItem = new EconomicItem(1, "1", "wood");
             MarketableItem woodMarketItem = new MarketableItem()
             {
@@ -26,6 +30,13 @@ namespace F500Tests
             };
 
             TestMarketPlace marketPlace = new TestMarketPlace();
+
+            marketPlace.QuantityChanged += args =>
+            {
+                buyerBought = true;
+                wait.Release(1);
+            };
+            
             marketPlace.Items.Add(woodMarketItem.Item.Id, woodMarketItem);
             
             ServiceLocator.Current.RegisterMarket(marketPlace);
@@ -43,8 +54,56 @@ namespace F500Tests
                 Item = actionItem
             };
             
+            // forcing the market to change the price, which will trigger the buyer
+            // into buying mode
             marketPlace.CreatePriceChangeEvent(woodMarketItem, 25);
+            wait.WaitOne(TimeSpan.FromSeconds(1));
+            Assert.IsTrue(buyerBought);
+        }
 
+        [Test]
+        public void BuyerDoesNotByAtPrice()
+        {
+            bool buyerBought = false;
+            Semaphore wait = new Semaphore(0, 1, "BuyerDoesNotByAtPrice");
+            EconomicItem woodItem = new EconomicItem(1, "1", "wood");
+            MarketableItem woodMarketItem = new MarketableItem()
+            {
+                Item = woodItem,
+                Price = 50,
+                Qty = 1000
+            };
+
+            TestMarketPlace marketPlace = new TestMarketPlace();
+
+            marketPlace.QuantityChanged += args =>
+            {
+                buyerBought = true;
+                wait.Release(1);
+            };
+            
+            marketPlace.Items.Add(woodMarketItem.Item.Id, woodMarketItem);
+            
+            ServiceLocator.Current.RegisterMarket(marketPlace);
+            MarketActionItem actionItem = new MarketActionItem()
+            {
+                Item = woodItem,
+                ActionQty = 1,
+                Price = 10,
+                Qty = Constants.NOT_APPLICABLE,
+                Volume = Constants.NOT_APPLICABLE
+            };
+            
+            StandardBuyer buyer = new StandardBuyer()
+            {
+                Item = actionItem
+            };
+            
+            // forcing the market to change the price, which will trigger the buyer
+            // into buying mode
+            marketPlace.CreatePriceChangeEvent(woodMarketItem, 45);
+            wait.WaitOne(TimeSpan.FromSeconds(1));
+            Assert.IsFalse(buyerBought);
         }
     }
 }
