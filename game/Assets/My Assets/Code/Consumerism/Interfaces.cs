@@ -12,12 +12,18 @@ namespace F500.Consumerism
 	
 	#region buying and selling
 	// Sellers sell items to the market
-	public interface ISeller {}
-	
+	public interface ISeller
+	{
+		IMarketActionItem Item { get; }
+	}
+
 	/// <summary>
 	/// Buyers buy items from the market 
 	/// </summary>
-	public interface IBuyer {}
+	public interface IBuyer
+	{
+		IMarketActionItem Item { get; }
+	}
 	#endregion
 
 	#region market
@@ -66,6 +72,9 @@ namespace F500.Consumerism
 
 		bool CanBuy(IMarketableItem item, decimal qty);
 		void Buy(IMarketableItem item, decimal qty);
+
+		bool CanSell(IMarketableItem item, decimal qty);
+		void Sell(IMarketableItem item, decimal qty);
 	}
 	#endregion
 }

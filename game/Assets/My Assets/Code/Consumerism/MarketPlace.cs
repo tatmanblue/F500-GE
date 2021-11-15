@@ -99,6 +99,17 @@ namespace F500.Consumerism
         {
             FireQtyChangeEvent(item, qty);
         }
+
+
+        public bool CanSell(IMarketableItem item, decimal qty)
+        {
+            return true;
+        }
+
+        public void Sell(IMarketableItem item, decimal qty)
+        {
+            FireQtyChangeEvent(item, qty);
+        }
     }
     
 }
