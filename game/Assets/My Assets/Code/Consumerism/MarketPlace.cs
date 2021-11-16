@@ -51,43 +51,64 @@ namespace F500.Consumerism
             }
         }
 
-        protected void FirePriceChangeEvent(IMarketableItem item, decimal newPrice)
+        protected void FirePriceChangeEvent(IMarketableItem item, decimal newPrice, MarketChangeTriggers type)
         {
             PriceChangedEvent safeEvent = priceChangedEvent;
             if (null == safeEvent) return;
             PriceChangedEventArgs args = new PriceChangedEventArgs
             {
                 Item = item,
-                Price = newPrice
+                Price = newPrice,
+                Trigger = type
             };
 
             safeEvent(args);
         }
 
-        protected void FireQtyChangeEvent(IMarketableItem item, decimal newQty)
+        protected void FireQtyChangeEvent(IMarketableItem item, decimal newQty, MarketChangeTriggers type)
         {
             QuantityChangedEvent safeEvent = qtyChangedEvent;
             if (null == safeEvent) return;
             QtyChangedEventArgs args = new QtyChangedEventArgs
             {
                 Item = item,
-                Quantity = newQty
+                Quantity = newQty,
+                Trigger = type
             };
 
             safeEvent(args);
         }
 
-        protected void FireVolumeChangeEvent(IMarketableItem item, decimal newVolume)
+        protected void FireVolumeChangeEvent(IMarketableItem item, decimal newVolume, MarketChangeTriggers type)
         {
             VolumeChangedEvent safeEvent = volumeChangedEvent;
             if (null == safeEvent) return;
             VolumeChangedEventArgs args = new VolumeChangedEventArgs
             {
                 Item = item,
-                Volume = newVolume
+                Volume = newVolume,
+                Trigger = type
             };
 
             safeEvent(args);
+        }
+
+        protected void ApplyPriceAdjustments(IMarketableItem item, decimal qty, MarketChangeTriggers type)
+        {
+            List<IMarketResponder> responders = ServiceLocator.Current.GetResponders();
+            decimal totalAdjustment = 0;
+            foreach (IMarketResponder res in responders)
+            {
+                totalAdjustment += res.ComputePrice(new ComputePriceAdjustmentData
+                {
+                    Item = item,
+                    Quantity = newQty,
+                    Trigger = type
+                });
+            }
+
+            item.Price += totalAdjustment;
+            FirePriceChangeEvent(item, item.Price, type);
         }
         
         public bool CanBuy(IMarketableItem item, decimal qty)
@@ -97,7 +118,8 @@ namespace F500.Consumerism
 
         public void Buy(IMarketableItem item, decimal qty)
         {
-            FireQtyChangeEvent(item, qty);
+            FireQtyChangeEvent(item, qty, MarketChangeTriggers.Buy);
+            ApplyPriceAdjustments(item, qty, MarketChangeTriggers.Buy);
         }
 
 
@@ -108,7 +130,8 @@ namespace F500.Consumerism
 
         public void Sell(IMarketableItem item, decimal qty)
         {
-            FireQtyChangeEvent(item, qty);
+            FireQtyChangeEvent(item, qty, MarketChangeTriggers.Sell);
+            ApplyPriceAdjustments(item, qty, MarketChangeTriggers.Buy);
         }
     }
     

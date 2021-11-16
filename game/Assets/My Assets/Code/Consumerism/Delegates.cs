@@ -8,6 +8,7 @@ namespace F500.Consumerism
         public IMarketableItem Item { get; set; }
         public DateTime When { get; set; } = DateTime.Now;
         public decimal Price { get; set; }
+        public MarketChangeTriggers Trigger { get; set; } = MarketChangeTriggers.Error;
     }
 
     public class VolumeChangedEventArgs
@@ -15,6 +16,7 @@ namespace F500.Consumerism
         public IMarketableItem Item { get; set; }
         public DateTime When { get; set; } = DateTime.Now;
         public decimal Volume { get; set; }
+        public MarketChangeTriggers Trigger { get; set; } = MarketChangeTriggers.Error;
     }
 
     public class QtyChangedEventArgs
@@ -22,6 +24,7 @@ namespace F500.Consumerism
         public IMarketableItem Item { get; set; }
         public DateTime When { get; set; } = DateTime.Now;
         public decimal Quantity { get; set; }
+        public MarketChangeTriggers Trigger { get; set; } = MarketChangeTriggers.Error;
     }
     
     public delegate void PriceChangedEvent(PriceChangedEventArgs args);

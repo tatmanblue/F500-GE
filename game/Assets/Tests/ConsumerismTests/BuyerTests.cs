@@ -4,13 +4,13 @@ using F500.Consumerism;
 using NUnit.Framework;
 using UnityEditor.VersionControl;
 
-namespace F500Tests
+namespace F500Tests.Consumerism
 {
     public class TestMarketPlace : MarketPlace
     {
-        public void CreatePriceChangeEvent(IMarketableItem item, decimal newPrice)
+        public void CreatePriceChangeEvent(IMarketableItem item, decimal newPrice, MarketChangeTriggers type = MarketChangeTriggers.System)
         {
-            FirePriceChangeEvent(item, newPrice);
+            FirePriceChangeEvent(item, newPrice, type);
         }
     }
    
@@ -57,7 +57,7 @@ namespace F500Tests
 
                 // forcing the market to change the price, which will trigger the buyer
                 // into buying mode
-                marketPlace.CreatePriceChangeEvent(woodMarketItem, 25);
+                marketPlace.CreatePriceChangeEvent(woodMarketItem, 25, MarketChangeTriggers.Sell);
                 wait.WaitOne(TimeSpan.FromSeconds(1));
                 Assert.IsTrue(buyerBought);
             }
@@ -104,7 +104,7 @@ namespace F500Tests
 
                 // forcing the market to change a price higher than it will buy at,
                 // thus causing the buyer to ignore the price change event
-                marketPlace.CreatePriceChangeEvent(woodMarketItem, 45);
+                marketPlace.CreatePriceChangeEvent(woodMarketItem, 45, MarketChangeTriggers.Sell);
                 wait.WaitOne(TimeSpan.FromSeconds(1));
                 Assert.IsFalse(buyerBought);
             }

@@ -3,10 +3,18 @@ using System.Threading;
 using F500.Consumerism;
 using NUnit.Framework;
 
-namespace F500Tests
+namespace F500Tests.Consumerism
 {
     public class SellerTests
     {
+        [Test]
+        public void SellerSubsribedCorrectly()
+        {
+            bool subscribedToPriceChange = false;
+            
+            Assert.IsTrue(subscribedToPriceChange);
+        }
+        
         [Test]
         public void SellerSellsAtPrice()
         {
@@ -48,7 +56,7 @@ namespace F500Tests
 
                 // forcing the market to change the price, which will trigger the seller
                 // into selling mode
-                marketPlace.CreatePriceChangeEvent(woodMarketItem, 75);
+                marketPlace.CreatePriceChangeEvent(woodMarketItem, 75, MarketChangeTriggers.Buy);
                 wait.WaitOne(TimeSpan.FromSeconds(1));
                 Assert.IsTrue(sellerSold);
             }
@@ -95,7 +103,7 @@ namespace F500Tests
 
                 // forcing the market to change to a price lower, which the seller
                 // will igore and not sell anything
-                marketPlace.CreatePriceChangeEvent(woodMarketItem, 25);
+                marketPlace.CreatePriceChangeEvent(woodMarketItem, 25, MarketChangeTriggers.Buy);
                 wait.WaitOne(TimeSpan.FromSeconds(1));
                 Assert.IsFalse(sellerSold);
             }

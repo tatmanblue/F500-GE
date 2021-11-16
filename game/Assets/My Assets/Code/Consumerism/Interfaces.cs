@@ -62,6 +62,20 @@ namespace F500.Consumerism
 		decimal Volume { get; }
 		decimal ActionQty { get; }
 	}
+
+	/// <summary>
+	/// A Market Responder is responsible for making adjustments to
+	/// market and economic status after a change.
+	///
+	/// Typically response would be changing the price after buy or sell
+	/// but other factors can come into play
+	///
+	/// Another response may adjust price after an change in volume
+	/// </summary>
+	public interface IMarketResponder
+	{
+		decimal ComputePrice(ComputePriceAdjustmentData args);
+	}
 	
 	public interface IMarketPlace
 	{
