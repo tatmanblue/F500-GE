@@ -11,7 +11,7 @@ namespace F500Tests.Consumerism
         public void SellerSellsAtPrice()
         {
             bool sellerSold = false;
-            using (Semaphore wait = new Semaphore(0, 1, "SellerSellsAtPrice"))
+            using (Semaphore wait = new Semaphore(0, 1, "SellsAtPrice"))
             {
                 EconomicItem woodItem = new EconomicItem(1, "1", "wood");
                 MarketableItem woodMarketItem = new MarketableItem()
