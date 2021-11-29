@@ -8,14 +8,6 @@ namespace F500Tests.Consumerism
     public class SellerTests
     {
         [Test]
-        public void SellerSubsribedCorrectly()
-        {
-            bool subscribedToPriceChange = false;
-            
-            Assert.IsTrue(subscribedToPriceChange);
-        }
-        
-        [Test]
         public void SellerSellsAtPrice()
         {
             bool sellerSold = false;

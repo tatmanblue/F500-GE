@@ -10,7 +10,7 @@ namespace F500.Consumerism
         public decimal Price { get; set; }
         public MarketChangeTriggers Trigger { get; set; } = MarketChangeTriggers.Error;
     }
-
+    
     public class VolumeChangedEventArgs
     {
         public IMarketableItem Item { get; set; }

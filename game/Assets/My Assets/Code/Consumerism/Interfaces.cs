@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace F500.Consumerism
@@ -50,7 +51,7 @@ namespace F500.Consumerism
 	public interface IMarketableItem
 	{
 		IEconomicItem Item { get; }
-		decimal Price { get; }
+		decimal Price { get; set; }
 		decimal Qty { get; }
 	}
 
@@ -62,7 +63,7 @@ namespace F500.Consumerism
 		decimal Volume { get; }
 		decimal ActionQty { get; }
 	}
-
+	
 	/// <summary>
 	/// A Market Responder is responsible for making adjustments to
 	/// market and economic status after a change.
@@ -74,7 +75,7 @@ namespace F500.Consumerism
 	/// </summary>
 	public interface IMarketResponder
 	{
-		decimal ComputePrice(ComputePriceAdjustmentData args);
+		PriceChangedResponse ComputePrice(ComputePriceAdjustmentData args);
 	}
 	
 	public interface IMarketPlace

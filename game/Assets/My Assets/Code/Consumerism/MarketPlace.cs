@@ -93,21 +93,32 @@ namespace F500.Consumerism
             safeEvent(args);
         }
 
+        /// <summary>
+        /// Applies price adjustments when the qty of item changes in the market place
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="qty"></param>
+        /// <param name="type"></param>
         protected void ApplyPriceAdjustments(IMarketableItem item, decimal qty, MarketChangeTriggers type)
         {
             List<IMarketResponder> responders = ServiceLocator.Current.GetResponders();
-            decimal totalAdjustment = 0;
+            // we always assume there is more than one responder, especially since there can
+            // be different responders for MarketChangeTriggers
             foreach (IMarketResponder res in responders)
             {
-                totalAdjustment += res.ComputePrice(new ComputePriceAdjustmentData
+                PriceChangedResponse response = res.ComputePrice(new ComputePriceAdjustmentData
                 {
                     Item = item,
-                    Quantity = newQty,
+                    Quantity = qty,
                     Trigger = type
                 });
-            }
 
-            item.Price += totalAdjustment;
+                if (response.NotApplicable == false)
+                    item.Price += response.PriceAdjustment;
+            }
+            
+            // to avoid a flurry of buy/sell orders that result from price change, only fire
+            // this event once after all responders have made their adjustments
             FirePriceChangeEvent(item, item.Price, type);
         }
         

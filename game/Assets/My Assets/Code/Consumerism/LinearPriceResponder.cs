@@ -19,21 +19,28 @@ namespace F500.Consumerism
             WhenQtyChangesBy = whenQtyChangesBy;
         }
 
-        public decimal ComputePrice(ComputePriceAdjustmentData args)
+        public PriceChangedResponse ComputePrice(ComputePriceAdjustmentData args)
         {
+            PriceChangedResponse response = new PriceChangedResponse()
+            {
+                Item = args.Item,
+                Trigger = args.Trigger
+            };
+
             if (args.Trigger == MarketChangeTriggers.Error || args.Trigger == MarketChangeTriggers.System)
-                return Constants.NOT_APPLICABLE;
+                return response;
             
-            if (args.Quantity > WhenQtyChangesBy)
-                return Constants.NOT_APPLICABLE;
+            if (args.Quantity < WhenQtyChangesBy)
+                return response;
 
             int modifer = Constants.PRICE_GOES_UP;
             if (args.Trigger == MarketChangeTriggers.Sell)
                 modifer = Constants.PRICE_GOES_DOWN;
             
             decimal priceAdjustment = WhenQtyChangesBy * args.Quantity * modifer;
-
-            return priceAdjustment;
+            response.PriceAdjustment = priceAdjustment;
+            response.NotApplicable = false;
+            return response;
         }
     }
 }
