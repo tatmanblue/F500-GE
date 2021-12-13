@@ -2,15 +2,21 @@
 {
     /// <summary>
     /// An item in the economy.  Instance is a aggregation and unique per inventory.
-    /// 
-    /// Note: this should probably be an interface so that different systems can
-    /// have different inventory structures and as long as the type meets the contract
-    /// it will work in the system
+    /// This type does not contain information about construction of the item (in
+    /// the case of producers) or price and quantity (in the case of buying, selling and
+    /// marketing)
     /// </summary>
-    public class EconomicItem
+    public class EconomicItem : IEconomicItem
     {
-        public decimal Qty { get; set; }
-        public decimal Price { get; set; }
-        public string UniqueId { get; set; }
+        public int Id { get; private set; }
+        public string SystemId { get; private set; }
+        public string Name { get; private set; }
+
+        public EconomicItem(int id, string systemId, string name)
+        {
+            Id = id;
+            SystemId = systemId;
+            Name = name;
+        }
     }
 }
